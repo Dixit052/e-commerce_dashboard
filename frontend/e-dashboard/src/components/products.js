@@ -5,6 +5,7 @@ export default function Products() {
 
   const [product, setProduct] = useState([])
 
+
   useEffect(() => {
    
     fetchData();
@@ -22,12 +23,29 @@ export default function Products() {
            });
            fetchData(); 
   }
+ 
+  const handleSearch =(event)=>{
+    let key = event.target.value;
+    if(key){
+        searchProduct(key);
+    }
+    else {
+      fetchData();
+    }
+  }
+ const searchProduct = async (key)=>{
+    let result = await fetch(`http://localhost:5000/search/${key}`);
+    result = await result.json();
+    // console.log(result);
+    setProduct(result);
 
+ }
 
 
   return (
     <div className='container-prod'>
       <h2>Product List</h2>
+      <input id='search-bar' type='text'  placeholder='Search Product'  onChange={handleSearch} />
       <ul  className='list-head'>
         <li>S.No.</li>
         <li>Product Name</li>
@@ -37,6 +55,7 @@ export default function Products() {
         <li>Operation</li>
       </ul>
       {
+        product.length>0?
         product.map((item, index) =>
           <ul className='list-entry' key={index}  >
             <li >{index + 1}</li>
@@ -50,7 +69,8 @@ export default function Products() {
 
             </li>
           </ul>
-        )
+        ):
+        <h3>No record Found</h3>
       }
 
 

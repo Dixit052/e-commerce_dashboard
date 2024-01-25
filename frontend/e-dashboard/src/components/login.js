@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const navigate = useNavigate();
-  const auth = localStorage.getItem("user");
+  const auth = localStorage.getItem("auth");
   useEffect(() => {
     if (auth) navigate("/")
   })
@@ -39,16 +39,11 @@ export default function Login() {
         // throw new Error('Network response was not ok');
       }
 
-      // Handle the response data
-      //const responseData = await response.json();
-      const user = {
-        email: FormData.email
-      }
       setFormData({
         email: '',
         password: '',
       });
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("auth", responseData.auth);
       navigate('/');
 
 

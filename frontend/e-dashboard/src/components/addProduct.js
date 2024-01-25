@@ -78,7 +78,7 @@ export default function Addproduct() {
         <input type='number' name='price' placeholder='Price'value={productData.price}  onChange={handleChange} required={true}   />
         <select name='category' value={productData.category} onChange={handleChange} required={true}  >
           <option value="category">select-category</option>
-          <option value="electroncis" >Electroncis</option>
+          <option value="electronics" >Electronics</option>
           <option value="automobile">Automobile</option>
           <option value="cloths">Cloths</option>
         </select>

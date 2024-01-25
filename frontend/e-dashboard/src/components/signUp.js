@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export default function SignUp() {
   const navigate = useNavigate();
   useEffect(() => {
-      const auth = localStorage.getItem('user');
+      const auth = localStorage.getItem('auth');
       if(auth){
         navigate('/');
       }
@@ -54,16 +54,13 @@ export default function SignUp() {
 
       // Handle the response data
       const responseData = await response.json();
-      const user = {
-        name: formData.name,
-        email: formData.email
-      }
+
       setFormData({
         name: '',
         email: '',
         password: '',
       });
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("auth", responseData.auth);
       navigate('/');
 
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 export default function Nav() {
   const navigate = useNavigate();
-  const auth = localStorage.getItem("user");
+  const auth = localStorage.getItem("auth");
   const logout = () => {
     localStorage.clear();
     navigate("/signup");
