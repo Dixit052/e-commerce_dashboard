@@ -12,7 +12,11 @@ export default function Products() {
 
   }, []);
   const fetchData = async () => {
-    let respone = await fetch('http://localhost:5000/product');
+    let respone = await fetch('http://localhost:5000/product',{
+      headers:{
+        authorization : localStorage.getItem('auth')
+      }
+    });
     respone = await respone.json();
     setProduct(respone);
   }

@@ -15,10 +15,13 @@ app.use(bodyParser.urlencoded({ extended: false }))
 require('./db/config');
 const Jwt_key = process.env.JWT_KEY;
 app.use(express.json());
+const  veryToken = require('./middleware/auth_api');
+///////////////////////////////////////
 app.get("/", (req, res) => {
     res.send("server is set up successfully");
 
 })
+///////////////-- REGISTER API --////////////////////
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -27,7 +30,7 @@ app.post('/register', async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: 'Email already in use' });
         }
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const newUser = new User({
             name,
@@ -54,7 +57,7 @@ app.post('/register', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
-
+///////////-----login API-- //////////////////////////////////////////
 app.post('/login', async (req, res) => {
     if (req.body.email && req.body.password) {
         let user = await User.findOne({ email: req.body.email });
@@ -91,7 +94,7 @@ app.post('/login', async (req, res) => {
     }
 })
 
-///// addProduct_api
+////////////addProduct_api////////////////
 app.post("/add-product", async (req, res) => {
     const product = new productModel(req.body);
     const result = await product.save();
@@ -99,8 +102,8 @@ app.post("/add-product", async (req, res) => {
 
 })
 
-//// getproductApi
-app.get("/product", async (req, res) => {
+///////////////-- getproductApi--////////////
+app.get("/product",veryToken, async (req, res) => {
 
     const product = await Product.find();
     if (product.length > 0) {
@@ -111,6 +114,7 @@ app.get("/product", async (req, res) => {
     }
 
 })
+//////////--DELETE API --///////////////////
 app.delete("/product/:id", async (req, res) => {
     let response = await Product.deleteOne({ _id: req.params.id });
     res.send(response);
@@ -140,6 +144,8 @@ app.get("/search/:key", async (req, res) => {
     res.send(result);
 
 })
+
+
 
 
 
